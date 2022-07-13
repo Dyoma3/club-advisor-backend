@@ -12,3 +12,9 @@ Route.resource('users', 'UsersController').apiOnly().middleware({
   update: 'auth',
   destroy: 'auth',
 });
+
+Route.resource('countries', 'CountriesController').apiOnly().middleware({
+  store: 'auth',
+  update: 'auth',
+  destroy: 'auth',
+});

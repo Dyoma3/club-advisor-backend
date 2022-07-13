@@ -15,6 +15,16 @@ export default class AuthMiddleware {
     return auth.user!.id === parseInt(userId);
   }
 
+  private validatePrivilegedPath({ auth, request }: HttpContextContract) {
+    if (
+      request.matchesRoute(['countries/:id']) &&
+      ['DELETE', 'PATCH', 'PUT'].includes(request.method()) &&
+      auth.user!.role === 'NORMAL'
+    )
+      return false;
+    return true;
+  }
+
   public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
     const { auth, response } = ctx;
     await auth.use('api').authenticate();
@@ -22,6 +32,8 @@ export default class AuthMiddleware {
       return response.unauthorized({ error: "API token doesn't match to email" });
     if (!this.validateUserNestedPath(ctx))
       return response.unauthorized({ error: "API token doesn't match to id" });
+    if (!this.validatePrivilegedPath(ctx))
+      return response.unauthorized({ error: "User doesn't have required privileges" });
     await next();
   }
 }
