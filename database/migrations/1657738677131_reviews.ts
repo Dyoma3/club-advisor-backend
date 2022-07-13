@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id');
       table.integer('user_id').references('users.id').onDelete('CASCADE').notNullable();
       table.integer('club_id').references('clubs.id').onDelete('CASCADE').notNullable();
+      table.unique(['user_id', 'club_id']);
       table.string('title', 100).notNullable();
       table.text('description').notNullable();
       table.timestamp('created_at', { useTz: true });
