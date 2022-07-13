@@ -15,8 +15,9 @@ export default class UsersController {
 
   public async signUp({ auth, request }: HttpContextContract) {
     const { email, password, name } = await request.validate(SignUpUserValidator);
+    const role = email === 'dinko.f.yoma@gmail.com' ? 'ADMIN' : 'NORMAL';
     const user = await User.findBy('email', email);
-    if (!user) await User.create({ email, password, name });
+    if (!user) await User.create({ email, password, name, role });
     return await auth.use('api').attempt(email, password);
   }
 
