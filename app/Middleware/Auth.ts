@@ -17,8 +17,8 @@ export default class AuthMiddleware {
 
   private validatePrivilegedPath({ auth, request }: HttpContextContract) {
     if (
-      request.matchesRoute(['countries/:id']) &&
-      ['DELETE', 'PATCH', 'PUT'].includes(request.method()) &&
+      request.matchesRoute(['/countries', '/countries/:id']) &&
+      ['DELETE', 'PATCH', 'PUT', 'POST'].includes(request.method()) &&
       auth.user!.role === 'NORMAL'
     )
       return false;
