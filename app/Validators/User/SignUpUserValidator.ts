@@ -1,19 +1,13 @@
 import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
-export default class StoreClubValidator {
+export default class SignUpUserValidator {
   constructor(protected ctx: HttpContextContract) {}
 
-  public refs = schema.refs({
-    cityId: this.ctx.params.city_id,
-  })
-
   public schema = schema.create({
-    name: schema.string([
-      rules.trim(),
-      rules.alpha(),
-      rules.unique({ table: 'club', column: 'name', where: { city_id: this.refs.cityId } }),
-    ]),
+    name: schema.string([rules.trim()]),
+    email: schema.string([rules.email(), rules.trim()]),
+    password: schema.string(),
   });
 
   public messages: CustomMessages = {};

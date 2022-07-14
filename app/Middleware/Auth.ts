@@ -1,11 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
 export default class AuthMiddleware {
-  private validateUserPath({ auth, request, params }: HttpContextContract) {
+  private validateUserPath({ auth, params, request }: HttpContextContract) {
     const requestArray = request.url().split('/');
-    const isUserRequest = requestArray[1] === 'users' && requestArray.length === 3;
-    if (isUserRequest && ['DELETE', 'PATCH', 'PUT'].includes(request.method()))
-      return auth.user!.id === parseInt(params.id);
+    if (requestArray[1] === 'users') return auth.user!.id === parseInt(params.id);
     return true;
   }
 
@@ -17,8 +15,15 @@ export default class AuthMiddleware {
 
   private validatePrivilegedPath({ auth, request }: HttpContextContract) {
     if (
-      request.matchesRoute(['/countries', '/countries/:id']) &&
-      ['DELETE', 'PATCH', 'PUT', 'POST'].includes(request.method()) &&
+      request.matchesRoute([
+        '/countries',
+        '/countries/:id',
+        '/cities/:id',
+        '/countries/:country_id/cities',
+        '/countries/:country_id/cities/:id',
+        '/music-types',
+        '/music-types/:id',
+      ]) &&
       auth.user!.role === 'NORMAL'
     )
       return false;
@@ -29,7 +34,7 @@ export default class AuthMiddleware {
     const { auth, response } = ctx;
     await auth.use('api').authenticate();
     if (!this.validateUserPath(ctx))
-      return response.unauthorized({ error: "API token doesn't match to email" });
+      return response.unauthorized({ error: "API token doesn't match to id" });
     if (!this.validateUserNestedPath(ctx))
       return response.unauthorized({ error: "API token doesn't match to id" });
     if (!this.validatePrivilegedPath(ctx))
