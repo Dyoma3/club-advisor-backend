@@ -1,6 +1,14 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm';
+import {
+  BaseModel,
+  column,
+  hasMany,
+  HasMany,
+  hasManyThrough,
+  HasManyThrough,
+} from '@ioc:Adonis/Lucid/Orm';
 import City from './City';
+import Club from './Club';
 
 export default class Country extends BaseModel {
   @column({ isPrimary: true })
@@ -17,4 +25,7 @@ export default class Country extends BaseModel {
 
   @hasMany(() => City)
   public cities: HasMany<typeof City>;
+
+  @hasManyThrough([() => Club, () => City])
+  public clubs: HasManyThrough<typeof Club>;
 }

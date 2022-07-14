@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column, belongsTo, BelongsTo } from '@ioc:Adonis/Lucid/Orm';
+import { BaseModel, column, belongsTo, BelongsTo, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm';
 import Country from './Country';
+import Club from './Club';
 
 export default class City extends BaseModel {
   @column({ isPrimary: true })
@@ -20,4 +21,7 @@ export default class City extends BaseModel {
 
   @belongsTo(() => Country)
   public country: BelongsTo<typeof Country>;
+
+  @hasMany(() => Club)
+  public clubs: HasMany<typeof Club>;
 }
