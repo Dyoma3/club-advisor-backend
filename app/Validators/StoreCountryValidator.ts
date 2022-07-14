@@ -5,7 +5,11 @@ export default class StoreCountryValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name: schema.string([rules.trim(), rules.unique({ table: 'countries', column: 'name' })]),
+    name: schema.string([
+      rules.trim(),
+      rules.unique({ table: 'countries', column: 'name' }),
+      rules.alpha(),
+    ]),
   });
 
   public messages: CustomMessages = {};

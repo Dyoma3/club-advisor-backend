@@ -1,5 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route';
 
+const authMiddleware = { store: 'auth', update: 'auth', destroy: 'auth' };
+
 Route.get('/', async () => {
   return { hello: 'world' };
 });
@@ -13,8 +15,10 @@ Route.resource('users', 'UsersController').apiOnly().middleware({
   destroy: 'auth',
 });
 
-Route.resource('countries', 'CountriesController').apiOnly().middleware({
-  store: 'auth',
-  update: 'auth',
-  destroy: 'auth',
-});
+Route.resource('countries', 'CountriesController').apiOnly().middleware(authMiddleware);
+
+Route.resource('countries.cities', 'CitiesController').apiOnly().middleware(authMiddleware);
+
+Route.resource('cities', 'CitiesController')
+  .only(['index', 'show', 'update', 'destroy'])
+  .middleware(authMiddleware);
