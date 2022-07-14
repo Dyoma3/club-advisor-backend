@@ -24,3 +24,5 @@ Route.resource('cities', 'CitiesController')
   .middleware(authMiddleware);
 
 Route.resource('music-types', 'MusicTypesController').apiOnly().middleware(authMiddleware);
+
+Route.resource('cities.clubs', 'ClubsController').apiOnly().middleware(authMiddleware);

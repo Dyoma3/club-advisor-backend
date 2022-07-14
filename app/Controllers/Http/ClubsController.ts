@@ -3,6 +3,7 @@ import Club from 'App/Models/Club';
 import User from 'App/Models/User';
 import City from 'App/Models/City';
 import Country from 'App/Models/Country';
+import StoreClubValidator from 'App/Validators/Club/StoreClubValidator';
 
 export default class ClubsController {
   public async index({ params }: HttpContextContract) {
@@ -24,5 +25,15 @@ export default class ClubsController {
 
   public async show({ params }: HttpContextContract) {
     return (await Club.findOrFail(params.id)).toJSON();
+  }
+
+  public async store({ auth, request, params, response }: HttpContextContract) {
+    const { name, musicTypes } = await request.validate(StoreClubValidator);
+    const city = await City.findOrFail(params.city_id);
+    const club = await city.related('clubs').create({ name, adminId: auth.user!.id });
+    await club.related('musicTypes').attach(musicTypes);
+    await club.load('musicTypes');
+    response.status(201);
+    return club.toJSON();
   }
 }

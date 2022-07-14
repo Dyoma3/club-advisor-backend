@@ -11,8 +11,9 @@ export default class StoreClubValidator {
   public schema = schema.create({
     name: schema.string([
       rules.trim(),
-      rules.unique({ table: 'club', column: 'name', where: { city_id: this.refs.cityId } }),
+      rules.unique({ table: 'clubs', column: 'name', where: { city_id: this.refs.cityId } }),
     ]),
+    musicTypes: schema.array().members(schema.number()),
   });
 
   public messages: CustomMessages = {};
