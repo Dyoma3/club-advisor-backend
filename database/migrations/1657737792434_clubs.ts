@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.string('name', 100).notNullable();
       table.timestamp('created_at', { useTz: true });
       table.timestamp('updated_at', { useTz: true });
+      table.unique(['city_id', 'name']);
     });
   }
 
