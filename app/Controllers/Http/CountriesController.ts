@@ -28,7 +28,6 @@ export default class CountriesController {
   public async destroy({ params, response }: HttpContextContract) {
     const country = await Country.findOrFail(params.id);
     await country.delete();
-    response.status(204);
-    return;
+    return response.status(204);
   }
 }

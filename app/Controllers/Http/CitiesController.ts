@@ -32,4 +32,10 @@ export default class CitiesController {
     await city.save();
     return city.toJSON();
   }
+
+  public async destroy({ params, response }: HttpContextContract) {
+    const city = await City.findOrFail(params.id);
+    await city.delete();
+    return response.status(204);
+  }
 }
