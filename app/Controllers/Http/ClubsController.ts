@@ -11,21 +11,29 @@ export default class ClubsController {
     const { user_id: userId, city_id: cityId, country_id: countryId } = params;
     if (userId) {
       const user = await User.findOrFail(userId);
-      return (await user.related('clubs').query()).map((club) => club.toJSON());
+      return (await user.related('clubs').query().preload('musicTypes')).map((club) =>
+        club.toJSON()
+      );
     }
     if (cityId) {
       const city = await City.findOrFail(cityId);
-      return (await city.related('clubs').query()).map((club) => club.toJSON());
+      return (await city.related('clubs').query().preload('musicTypes')).map((club) =>
+        club.toJSON()
+      );
     }
     if (countryId) {
       const country = await Country.findOrFail(countryId);
-      return (await country.related('clubs').query()).map((club) => club.toJSON());
+      return (await country.related('clubs').query().preload('musicTypes')).map((club) =>
+        club.toJSON()
+      );
     }
-    return (await Club.all()).map((club) => club.toJSON());
+    return (await Club.query().preload('musicTypes')).map((club) => club.toJSON());
   }
 
   public async show({ params }: HttpContextContract) {
-    return (await Club.findOrFail(params.id)).toJSON();
+    const club = await Club.findOrFail(params.id);
+    await club.load('musicTypes');
+    return club.toJSON();
   }
 
   public async store({ auth, request, params, response }: HttpContextContract) {
@@ -50,5 +58,11 @@ export default class ClubsController {
       await club.load('musicTypes');
     }
     return club.toJSON();
+  }
+
+  public async destroy({ params, response }: HttpContextContract) {
+    const club = await Club.findOrFail(params.id);
+    await club.delete();
+    return response.status(204);
   }
 }
