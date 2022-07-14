@@ -1,8 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import City from 'App/Models/City';
 import Country from 'App/Models/Country';
-import StoreCityValidator from 'App/Validators/StoreCityValidator';
-import UpdateCityValidator from 'App/Validators/UpdateCityValidator';
+import StoreCityValidator from 'App/Validators/City/StoreCityValidator';
+import UpdateCityValidator from 'App/Validators/City/UpdateCityValidator';
 
 export default class CitiesController {
   public async index({ params }: HttpContextContract) {
@@ -18,10 +18,11 @@ export default class CitiesController {
     return (await City.findOrFail(params.id)).toJSON();
   }
 
-  public async store({ request, params }: HttpContextContract) {
+  public async store({ request, params, response }: HttpContextContract) {
     const { name } = await request.validate(StoreCityValidator);
     const { country_id: countryId } = params;
     const city = await (await Country.findOrFail(countryId)).related('cities').create({ name });
+    response.status(201);
     return city.toJSON();
   }
 
