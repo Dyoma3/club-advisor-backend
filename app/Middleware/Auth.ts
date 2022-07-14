@@ -1,11 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
 export default class AuthMiddleware {
-  private validateUserPath({ auth, request, params }: HttpContextContract) {
+  private validateUserPath({ auth, params, request }: HttpContextContract) {
     const requestArray = request.url().split('/');
-    const isUserRequest = requestArray[1] === 'users' && requestArray.length === 3;
-    if (isUserRequest && ['DELETE', 'PATCH', 'PUT'].includes(request.method()))
-      return auth.user!.id === parseInt(params.id);
+    if (requestArray.includes('users')) return auth.user!.id === parseInt(params.id);
     return true;
   }
 
@@ -17,8 +15,15 @@ export default class AuthMiddleware {
 
   private validatePrivilegedPath({ auth, request }: HttpContextContract) {
     if (
-      request.matchesRoute(['/countries', '/countries/:id']) &&
-      ['DELETE', 'PATCH', 'PUT', 'POST'].includes(request.method()) &&
+      request.matchesRoute([
+        '/countries',
+        '/countries/:id',
+        '/cities/:id',
+        '/countries/:country_id/cities',
+        '/countries/:country_id/cities/:id',
+        '/music_types',
+        '/music_types/:id',
+      ]) &&
       auth.user!.role === 'NORMAL'
     )
       return false;

@@ -11,7 +11,6 @@ export default class StoreClubValidator {
   public schema = schema.create({
     name: schema.string([
       rules.trim(),
-      rules.alpha(),
       rules.unique({ table: 'club', column: 'name', where: { city_id: this.refs.cityId } }),
     ]),
   });

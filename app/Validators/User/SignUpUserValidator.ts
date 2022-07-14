@@ -5,7 +5,7 @@ export default class SignUpUserValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name: schema.string([rules.trim(), rules.alpha()]),
+    name: schema.string([rules.trim()]),
     email: schema.string([rules.email(), rules.trim()]),
     password: schema.string(),
   });

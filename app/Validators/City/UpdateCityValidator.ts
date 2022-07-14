@@ -18,7 +18,6 @@ export default class UpdateCityValidator {
         whereNot: { id: this.refs.cityId },
         where: { country_id: this.refs.countryId },
       }),
-      rules.alpha(),
     ]),
   });
 

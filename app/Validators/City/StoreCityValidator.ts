@@ -11,7 +11,6 @@ export default class StoreCityValidator {
   public schema = schema.create({
     name: schema.string([
       rules.trim(),
-      rules.alpha(),
       rules.unique({ table: 'cities', column: 'name', where: { country_id: this.refs.countryId } }),
     ]),
   });

@@ -11,7 +11,6 @@ export default class UpdateMusicTypeValidator {
   public schema = schema.create({
     name: schema.string([
       rules.trim(),
-      rules.alpha(),
       rules.unique({
         table: 'music_types',
         column: 'name',

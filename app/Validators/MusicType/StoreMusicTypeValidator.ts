@@ -5,11 +5,7 @@ export default class StoreMusicTypeValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name: schema.string([
-      rules.alpha(),
-      rules.trim(),
-      rules.unique({ table: 'music_types', column: 'name' }),
-    ]),
+    name: schema.string([rules.trim(), rules.unique({ table: 'music_types', column: 'name' })]),
   });
 
   public messages: CustomMessages = {};

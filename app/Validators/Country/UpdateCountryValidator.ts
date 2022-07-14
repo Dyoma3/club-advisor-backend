@@ -12,7 +12,6 @@ export default class UpdateCountryValidator {
     name: schema.string([
       rules.trim(),
       rules.unique({ table: 'countries', column: 'name', whereNot: { id: this.refs.countryId } }),
-      rules.alpha(),
     ]),
   });
 

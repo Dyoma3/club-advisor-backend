@@ -5,7 +5,7 @@ export default class UpdateUserValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   public schema = schema.create({
-    name: schema.string([rules.trim(), rules.alpha()]),
+    name: schema.string([rules.trim()]),
   });
 
   public messages: CustomMessages = {};

@@ -22,3 +22,5 @@ Route.resource('countries.cities', 'CitiesController').apiOnly().middleware(auth
 Route.resource('cities', 'CitiesController')
   .only(['index', 'show', 'update', 'destroy'])
   .middleware(authMiddleware);
+
+Route.resource('music-types', 'MusicTypesController').apiOnly().middleware(authMiddleware);

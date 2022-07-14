@@ -19,8 +19,9 @@ export default class UsersController {
     const role = email === 'dinko.f.yoma@gmail.com' ? 'ADMIN' : 'NORMAL';
     const user = await User.findBy('email', email);
     if (!user) await User.create({ email, password, name, role });
-    await auth.use('api').attempt(email, password);
-    return response.status(201);
+    const token = await auth.use('api').attempt(email, password);
+    response.status(201);
+    return token;
   }
 
   public async logIn({ auth, request }: HttpContextContract) {
