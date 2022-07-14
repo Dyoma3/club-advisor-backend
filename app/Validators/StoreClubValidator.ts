@@ -6,7 +6,7 @@ export default class StoreClubValidator {
 
   public refs = schema.refs({
     cityId: this.ctx.params.city_id,
-  })
+  });
 
   public schema = schema.create({
     name: schema.string([
