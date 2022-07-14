@@ -3,7 +3,6 @@ import SignUpUserValidator from 'App/Validators/User/SignUpUserValidator';
 import LogInUserValidator from 'App/Validators/User/LogInUserValidator';
 import UpdateUserValidator from 'App/Validators/User/UpdateUserValidator';
 import User from 'App/Models/User';
-import { Response } from '@adonisjs/core/build/standalone';
 
 export default class UsersController {
   public async index() {

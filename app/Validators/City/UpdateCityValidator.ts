@@ -6,7 +6,7 @@ export default class UpdateCityValidator {
 
   public refs = schema.refs({
     cityId: this.ctx.params.id,
-    countryId: this.ctx.params.city_id,
+    countryId: this.ctx.params.country_id,
   });
 
   public schema = schema.create({
