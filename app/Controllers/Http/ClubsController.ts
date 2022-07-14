@@ -4,6 +4,7 @@ import User from 'App/Models/User';
 import City from 'App/Models/City';
 import Country from 'App/Models/Country';
 import StoreClubValidator from 'App/Validators/Club/StoreClubValidator';
+import UpdateClubValidator from 'App/Validators/Club/UpdateClubValidator';
 
 export default class ClubsController {
   public async index({ params }: HttpContextContract) {
@@ -34,6 +35,20 @@ export default class ClubsController {
     await club.related('musicTypes').attach(musicTypes);
     await club.load('musicTypes');
     response.status(201);
+    return club.toJSON();
+  }
+
+  public async update({ request, params }: HttpContextContract) {
+    const { name, musicTypes } = await request.validate(UpdateClubValidator);
+    const club = await Club.findOrFail(params.id);
+    if (name) {
+      club.merge({ name });
+      await club.save();
+    }
+    if (musicTypes) {
+      await club.related('musicTypes').sync(musicTypes);
+      await club.load('musicTypes');
+    }
     return club.toJSON();
   }
 }
