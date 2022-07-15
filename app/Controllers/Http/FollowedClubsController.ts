@@ -4,12 +4,12 @@ import Club from 'App/Models/Club';
 
 export default class FollowedClubsController {
   public async followedClubs({ params }: HttpContextContract) {
-    const user = await User.findOrFail(params.user_id);
+    const user = await User.findOrFail(params.id);
     return (await user.related('followedClubs').query()).map((club) => club.toJSON());
   }
 
   public async clubFollowers({ params }: HttpContextContract) {
-    const club = await Club.findOrFail(params.club_id);
+    const club = await Club.findOrFail(params.id);
     return (await club.related('followers').query()).map((user) => user.toJSON());
   }
 
