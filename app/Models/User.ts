@@ -8,6 +8,7 @@ import {
   HasMany,
   manyToMany,
   ManyToMany,
+  computed,
 } from '@ioc:Adonis/Lucid/Orm';
 import Club from './Club';
 
@@ -48,4 +49,12 @@ export default class User extends BaseModel {
 
   @manyToMany(() => Club, { pivotTable: 'followed_clubs' })
   public followedClubs: ManyToMany<typeof Club>;
+
+  @manyToMany(() => Club, { pivotTable: 'ratings' })
+  public ratedClubs: ManyToMany<typeof Club>;
+
+  @computed()
+  public get stars() {
+    return this.$extras.pivot_stars;
+  }
 }

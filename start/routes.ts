@@ -39,14 +39,18 @@ Route.resource('clubs', 'ClubsController')
   .only(['index', 'show', 'update', 'destroy'])
   .middleware(authMiddleware);
 
-Route.get('users/:user_id/followed-clubs', 'FollowedClubsController.followedClubs');
+Route.get('users/:id/followed-clubs', 'FollowedClubsController.followedClubs');
 
-Route.get('clubs/:club_id/followers', 'FollowedClubsController.clubFollowers');
+Route.get('clubs/:id/followers', 'FollowedClubsController.clubFollowers');
 
-Route.post('users/:user_id/follow-club/:id', 'FollowedClubsController.followClub').middleware(
-  'auth'
-);
+Route.post('follow-club/:id', 'FollowedClubsController.followClub').middleware('auth');
 
-Route.post('users/:user_id/unfollow-club/:id', 'FollowedClubsController.unfollowClub').middleware(
-  'auth'
-);
+Route.post('unfollow-club/:id', 'FollowedClubsController.unfollowClub').middleware('auth');
+
+Route.post('rate-club/:id', 'RatingsController.rateClub').middleware('auth');
+
+Route.post('unrate-club/:id', 'RatingsController.unrateClub').middleware('auth');
+
+Route.get('clubs/:id/ratings', 'RatingsController.clubRatings');
+
+Route.get('users/:id/ratings', 'RatingsController.userRatings');
