@@ -31,10 +31,22 @@ Route.resource('cities.clubs', 'ClubsController')
   .only(['index', 'store'])
   .middleware(authMiddleware);
 
-Route.get('/countries/:country_id/clubs', 'ClubsController.index');
+Route.get('countries/:country_id/clubs', 'ClubsController.index');
 
-Route.get('/users/:user_id/clubs', 'ClubsController.index');
+Route.get('users/:user_id/clubs', 'ClubsController.index');
 
 Route.resource('clubs', 'ClubsController')
   .only(['index', 'show', 'update', 'destroy'])
   .middleware(authMiddleware);
+
+Route.get('users/:user_id/followed-clubs', 'FollowedClubsController.followedClubs');
+
+Route.get('clubs/:club_id/followers', 'FollowedClubsController.clubFollowers');
+
+Route.post('users/:user_id/follow-club/:id', 'FollowedClubsController.followClub').middleware(
+  'auth'
+);
+
+Route.post('users/:user_id/unfollow-club/:id', 'FollowedClubsController.unfollowClub').middleware(
+  'auth'
+);

@@ -38,4 +38,7 @@ export default class Club extends BaseModel {
 
   @manyToMany(() => MusicType, { pivotTable: 'club_music_type' })
   public musicTypes: ManyToMany<typeof MusicType>;
+
+  @manyToMany(() => User, { pivotTable: 'followed_clubs' })
+  public followers: ManyToMany<typeof User>;
 }
