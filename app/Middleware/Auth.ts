@@ -3,8 +3,7 @@ import Club from 'App/Models/Club';
 
 export default class AuthMiddleware {
   private validateUserPath({ auth, params, request }: HttpContextContract) {
-    const requestArray = request.url().split('/');
-    if (requestArray[1] === 'users') return auth.user!.id === parseInt(params.id);
+    if (request.matchesRoute('/users/:id')) return auth.user!.id === parseInt(params.id);
     return true;
   }
 

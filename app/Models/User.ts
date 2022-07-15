@@ -1,6 +1,14 @@
 import { DateTime } from 'luxon';
 import Hash from '@ioc:Adonis/Core/Hash';
-import { column, beforeSave, BaseModel, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm';
+import {
+  column,
+  beforeSave,
+  BaseModel,
+  hasMany,
+  HasMany,
+  manyToMany,
+  ManyToMany,
+} from '@ioc:Adonis/Lucid/Orm';
 import Club from './Club';
 
 export default class User extends BaseModel {
@@ -37,4 +45,7 @@ export default class User extends BaseModel {
 
   @hasMany(() => Club, { foreignKey: 'adminId' })
   public clubs: HasMany<typeof Club>;
+
+  @manyToMany(() => Club, { pivotTable: 'followed_clubs' })
+  public followedClubs: ManyToMany<typeof Club>;
 }

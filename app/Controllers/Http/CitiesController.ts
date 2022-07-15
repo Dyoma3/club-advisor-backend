@@ -26,11 +26,17 @@ export default class CitiesController {
     return city.toJSON();
   }
 
-  public async update({ params, request }: HttpContextContract) {
+  public async update({ params, request, response }: HttpContextContract) {
     const payload = await request.validate(UpdateCityValidator);
     const city = await City.findOrFail(params.id);
     city.merge(payload);
-    await city.save();
+    try {
+      await city.save();
+    } catch (err) {
+      if (err.constraint === 'cities_country_id_name_unique')
+        return response.unprocessableEntity({ error: 'City name must be unique within a country' });
+      return response.internalServerError({ error: 'Unexpected server error, try again' });
+    }
     return city.toJSON();
   }
 
