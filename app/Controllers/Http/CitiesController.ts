@@ -34,8 +34,8 @@ export default class CitiesController {
       await city.save();
     } catch (err) {
       if (err.constraint === 'cities_country_id_name_unique')
-        response.unprocessableEntity({ error: 'City name must be unique within a country' });
-      response.internalServerError({ error: 'Unexpected server error, try again' });
+        return response.unprocessableEntity({ error: 'City name must be unique within a country' });
+      return response.internalServerError({ error: 'Unexpected server error, try again' });
     }
     return city.toJSON();
   }

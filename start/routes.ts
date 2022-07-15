@@ -17,10 +17,12 @@ Route.resource('users', 'UsersController').apiOnly().middleware({
 
 Route.resource('countries', 'CountriesController').apiOnly().middleware(authMiddleware);
 
-Route.resource('countries.cities', 'CitiesController').apiOnly().middleware(authMiddleware);
+Route.resource('countries.cities', 'CitiesController')
+  .only(['index', 'store'])
+  .middleware(authMiddleware);
 
 Route.resource('cities', 'CitiesController')
-  .only(['index', 'show', 'destroy'])
+  .only(['index', 'show', 'update', 'destroy'])
   .middleware(authMiddleware);
 
 Route.resource('music-types', 'MusicTypesController').apiOnly().middleware(authMiddleware);

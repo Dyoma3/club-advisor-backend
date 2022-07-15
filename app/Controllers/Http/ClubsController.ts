@@ -46,12 +46,18 @@ export default class ClubsController {
     return club.toJSON();
   }
 
-  public async update({ request, params }: HttpContextContract) {
+  public async update({ request, params, response }: HttpContextContract) {
     const { name, musicTypes } = await request.validate(UpdateClubValidator);
     const club = await Club.findOrFail(params.id);
     if (name) {
       club.merge({ name });
-      await club.save();
+      try {
+        await club.save();
+      } catch (err) {
+        if (err.constraint === 'clubs_city_id_name_unique')
+          return response.unprocessableEntity({ error: 'City name must be unique within a city' });
+        return response.internalServerError({ error: 'Unexpected server error, try again' });
+      }
     }
     if (musicTypes) {
       await club.related('musicTypes').sync(musicTypes);
