@@ -1,3 +1,7 @@
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 
-export default class FollowedClubsController {}
+export default class FollowedClubsController {
+  public async index() {
+    return;
+  }
+}

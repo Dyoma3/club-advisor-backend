@@ -25,12 +25,14 @@ Route.resource('cities', 'CitiesController')
 
 Route.resource('music-types', 'MusicTypesController').apiOnly().middleware(authMiddleware);
 
-Route.resource('cities.clubs', 'ClubsController').apiOnly().middleware(authMiddleware);
+Route.resource('cities.clubs', 'ClubsController')
+  .only(['index', 'store'])
+  .middleware(authMiddleware);
 
 Route.get('/countries/:country_id/clubs', 'ClubsController.index');
 
 Route.get('/users/:user_id/clubs', 'ClubsController.index');
 
 Route.resource('clubs', 'ClubsController')
-  .only(['index', 'show', 'destroy'])
+  .only(['index', 'show', 'update', 'destroy'])
   .middleware(authMiddleware);
