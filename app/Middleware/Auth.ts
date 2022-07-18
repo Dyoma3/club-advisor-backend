@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Club from 'App/Models/Club';
+import Event from 'App/Models/Event';
 
 export default class AuthMiddleware {
   private validateUserPath({ auth, params, request }: HttpContextContract) {
@@ -31,8 +32,15 @@ export default class AuthMiddleware {
   }
 
   private async validateClubPath({ auth, request, params }: HttpContextContract) {
-    if (request.matchesRoute(['/clubs/:id', '/cities/:city_id/clubs/:id'])) {
+    if (
+      request.matchesRoute(['/clubs/:id', '/cities/:city_id/clubs/:id', '/clubs/:club_id/events'])
+    ) {
       const club = await Club.findOrFail(params.id);
+      return auth.user!.id === club.adminId;
+    }
+    if (request.matchesRoute(['/events/:id'])) {
+      const event = await Event.findOrFail(params.id);
+      const club = await event.related('club').query().firstOrFail();
       return auth.user!.id === club.adminId;
     }
     return true;
