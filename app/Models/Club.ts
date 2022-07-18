@@ -6,11 +6,14 @@ import {
   BelongsTo,
   manyToMany,
   ManyToMany,
+  hasMany,
+  HasMany,
   computed,
 } from '@ioc:Adonis/Lucid/Orm';
 import City from './City';
 import User from './User';
 import MusicType from './MusicType';
+import Event from './Event';
 
 export default class Club extends BaseModel {
   @column({ isPrimary: true })
@@ -48,6 +51,9 @@ export default class Club extends BaseModel {
 
   @manyToMany(() => User, { pivotTable: 'reviews' })
   public reviews: ManyToMany<typeof User>;
+
+  @hasMany(() => Event)
+  public events: HasMany<typeof Event>;
 
   @computed()
   public get stars() {

@@ -64,3 +64,11 @@ Route.delete('clubs/:club_id/reviews', 'ReviewsController.destroy').middleware('
 Route.patch('clubs/:club_id/reviews', 'ReviewsController.update').middleware('auth');
 
 Route.get('users/:user_id/reviews', 'ReviewsController.index');
+
+Route.resource('clubs.events', 'EventsController')
+  .only(['index', 'store'])
+  .middleware(authMiddleware);
+
+Route.resource('events', 'EventsController')
+  .only(['index', 'show', 'update', 'destroy'])
+  .middleware(authMiddleware);
