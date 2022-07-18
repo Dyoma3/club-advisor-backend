@@ -53,8 +53,21 @@ export default class User extends BaseModel {
   @manyToMany(() => Club, { pivotTable: 'ratings' })
   public ratedClubs: ManyToMany<typeof Club>;
 
+  @manyToMany(() => Club, { pivotTable: 'reviews' })
+  public reviews: ManyToMany<typeof Club>;
+
   @computed()
   public get stars() {
     return this.$extras.pivot_stars;
+  }
+
+  @computed()
+  public get review_title() {
+    return this.$extras.pivot_title;
+  }
+
+  @computed()
+  public get review_description() {
+    return this.$extras.pivot_description;
   }
 }
