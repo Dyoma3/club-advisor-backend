@@ -39,9 +39,9 @@ Route.resource('clubs', 'ClubsController')
   .only(['index', 'show', 'update', 'destroy'])
   .middleware(authMiddleware);
 
-Route.get('users/:id/followed-clubs', 'FollowedClubsController.followedClubs');
+Route.get('users/:user_id/followed-clubs', 'FollowedClubsController.followedClubs');
 
-Route.get('clubs/:id/followers', 'FollowedClubsController.clubFollowers');
+Route.get('clubs/:club_id/followers', 'FollowedClubsController.clubFollowers');
 
 Route.post('follow-club/:id', 'FollowedClubsController.followClub').middleware('auth');
 
@@ -51,6 +51,16 @@ Route.post('rate-club/:id', 'RatingsController.rateClub').middleware('auth');
 
 Route.post('unrate-club/:id', 'RatingsController.unrateClub').middleware('auth');
 
-Route.get('clubs/:id/ratings', 'RatingsController.clubRatings');
+Route.get('clubs/:club_id/ratings', 'RatingsController.clubRatings');
 
-Route.get('users/:id/ratings', 'RatingsController.userRatings');
+Route.get('users/:user_id/ratings', 'RatingsController.userRatings');
+
+Route.resource('clubs.reviews', 'ReviewsController')
+  .only(['index', 'store'])
+  .middleware(authMiddleware);
+
+Route.delete('clubs/:club_id/reviews', 'ReviewsController.destroy').middleware('auth');
+
+Route.patch('clubs/:club_id/reviews', 'ReviewsController.update').middleware('auth');
+
+Route.get('users/:user_id/reviews', 'ReviewsController.index');

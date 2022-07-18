@@ -42,7 +42,7 @@ export default class AuthMiddleware {
     const { auth, response } = ctx;
     await auth.use('api').authenticate();
     if (!this.validateUserPath(ctx) || !this.validateUserNestedPath(ctx))
-      return response.unauthorized({ error: "API token doesn't match to id" });
+      return response.unauthorized({ error: "Token doesn't match to id" });
     if (!this.validatePrivilegedPath(ctx))
       return response.unauthorized({ error: "User doesn't have required privileges" });
     if (!(await this.validateClubPath(ctx)))
