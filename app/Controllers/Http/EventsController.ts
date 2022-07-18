@@ -30,4 +30,10 @@ export default class EventsController {
     await event.save();
     return event.toJSON();
   }
+
+  public async destroy({ params, response }: HttpContextContract) {
+    const event = await Event.findOrFail(params.id);
+    await event.delete();
+    return response.status(204);
+  }
 }
