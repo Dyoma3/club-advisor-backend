@@ -35,7 +35,7 @@ export default class AuthMiddleware {
     if (
       request.matchesRoute(['/clubs/:id', '/cities/:city_id/clubs/:id', '/clubs/:club_id/events'])
     ) {
-      const club = await Club.findOrFail(params.id);
+      const club = await Club.findOrFail(params.id || params.club_id);
       return auth.user!.id === club.adminId;
     }
     if (request.matchesRoute(['/events/:id'])) {
