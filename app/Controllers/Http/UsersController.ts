@@ -20,7 +20,7 @@ export default class UsersController {
     if (!user) await User.create({ email, password, name, role });
     const token = await auth.use('api').attempt(email, password);
     response.status(201);
-    return token;
+    return { ...token.user.toJSON(), token: token.token };
   }
 
   public async logIn({ auth, request }: HttpContextContract) {
