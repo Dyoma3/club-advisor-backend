@@ -25,7 +25,8 @@ export default class UsersController {
 
   public async logIn({ auth, request }: HttpContextContract) {
     const { email, password } = await request.validate(LogInUserValidator);
-    return await auth.use('api').attempt(email, password);
+    const token = await auth.use('api').attempt(email, password);
+    return { ...token.user.toJSON(), token: token.token };
   }
 
   public async update({ auth, request }: HttpContextContract) {
