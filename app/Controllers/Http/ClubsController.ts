@@ -31,8 +31,7 @@ export default class ClubsController {
   }
 
   public async show({ params }: HttpContextContract) {
-    const club = await Club.findOrFail(params.id);
-    await club.load('musicTypes');
+    const club = await Club.query().preload('musicTypes').where('id', params.id).firstOrFail();
     return club.toJSON();
   }
 
